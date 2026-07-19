@@ -2,7 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 
 public class AccountController : Controller
 {
-    public IActionResult Index()
+    public IActionResult Profile()
+    {
+        return View();
+    }
+
+    public IActionResult Settings()
     {
         return View();
     }
