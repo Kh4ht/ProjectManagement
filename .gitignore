@@ -208,3 +208,6 @@ FakesAssemblies/
 
 # JetBrains Rider
 *.sln.iml
+
+# User-specific files
+.vscode/
