@@ -1,0 +1,18 @@
+@model ProjectManagement.Models.ViewModels.RegisterViewModel
+
+<h2>Register</h2>
+
+<form asp-action="Register" method="post">
+    @Html.AntiForgeryToken()
+
+    <input asp-for="Username" placeholder="Username" />
+
+    <input asp-for="Email" placeholder="Email" />
+
+    <input asp-for="Password" placeholder="Password" />
+
+    <button type="submit">
+        Register
+    </button>
+
+</form>

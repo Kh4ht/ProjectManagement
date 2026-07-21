@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Diagnostics.Eventing.Reader
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -17,7 +18,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
 
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Home">ProjectManagement</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ProjectManagement</a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,95 +32,106 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Project"
                                asp-action="index">Projects</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard"
-                               asp-action="Index">Dashboard</a>
-                        </li>
                     </ul>
 
                     @* Right side *@
                     <ul class="navbar-nav">
-                        @* Navigation dropdown for user notifications *@
-                        <li class="nav-item dropdown me-3">
-                            <a class="nav-link" href="#" data-bs-toggle="dropdown">
-                                <i class="bi bi-bell"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <h6 class="dropdown-header">
-                                        Notifications
-                                    </h6>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        Ahmed assigned you a task.
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        Project deadline tomorrow.
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        Sara commented on Task #21.
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        @* Navigation dropdown for user account actions *@
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-
-                                <i class="bi bi-person-circle"></i> Khaled
-                            </a>
-
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Account"
-                                       asp-action="Profile"><i class="bi bi-person-circle"></i> Profile</a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Account"
-                                       asp-action="Settings"><i class="bi bi-person-circle"></i> Settings</a>
-                                </li>
-
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item" href="#"><i class="bi bi-arrow-left-right"></i> Switch
-                                        Account</a>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            @* Navigation dropdown for user notifications *@
+                            <li class="nav-item dropdown me-3">
+                                <a class="nav-link" href="#" data-bs-toggle="dropdown">
+                                    <i class="bi bi-bell"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <h6 class="dropdown-header">
+                                            Notifications
+                                        </h6>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item text-danger" href="#"><i class="bi bi-box-arrow-right"></i>
-                                            Logout</a>
+                                        <a class="dropdown-item" href="#">
+                                            Ahmed assigned you a task.
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            Project deadline tomorrow.
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            Sara commented on Task #21.
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            @* Navigation dropdown for user account actions *@
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+
+                                    @User.Identity?.Name
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account"
+                                           asp-action="Profile"><i class="bi bi-person-circle"></i> Profile</a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account"
+                                           asp-action="Settings"><i class="bi bi-gear-wide-connected"></i> Settings</a>
+                                    </li>
+
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" href="#"><i class="bi bi-arrow-left-right"></i> Switch
+                                            Account</a>
+                                        </li>
+                                        <li>
+                                            <form asp-controller="Account" asp-action="Logout" method="post">
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit" class="dropdown-item text-danger border-0 bg-transparent">
+                                                    <i class="bi bi-box-arrow-right"></i>
+                                                    Logout
+                                                </button>
+                                            </form>
                                         </li>
                                     </ul>
                                 </li>
-                            </ul>
-                        </div>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                                </li>
+                            }
+                        </ul>
                     </div>
-                </nav>
-            </header>
-            <div class="container">
-                <main role="main" class="pb-3">
-                    @RenderBody()
-                </main>
-            </div>
-
-            <footer class="border-top footer text-muted">
-                <div class="container">
-                    &copy; 2026 - ProjectManagement - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                 </div>
-            </footer>
-            <script src="~/lib/jquery/dist/jquery.min.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="~/js/site.js" asp-append-version="true"></script>
-            @await RenderSectionAsync("Scripts", required: false)
-        </body>
+            </nav>
+        </header>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
 
-    </html>
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2026 - ProjectManagement - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+
+</html>

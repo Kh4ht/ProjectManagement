@@ -1,5 +1,32 @@
+@model ProjectManagement.Models.ViewModels.ProfileViewModel
+
 @{
-    ViewData["Title"] = "profile";
+    ViewData["Title"] = "Profile";
 }
 
-<h1>profile</h1>
+
+<h2>Profile</h2>
+
+
+<div class="card mt-4">
+    <div class="card-body">
+
+        <h5 class="card-title">
+            User Information
+        </h5>
+
+        <p>
+            <strong>Username:</strong>
+            @Model.Username
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            @Model.Email
+        </p>
+
+    </div>
+</div>
+<a asp-action="EditProfile" class="btn btn-primary">
+    Edit Profile
+</a>
