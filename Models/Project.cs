@@ -13,9 +13,9 @@ public class Project
     [StringLength(maximumLength: 500)]
     public string Description { get; set; } = string.Empty;
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public DateTime? DueDate { get; set; }
+    public DateOnly? DueDate { get; set; }
 
     public ProjectStatus Status { get; set; }
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Data;
+using ProjectManagement.Models;
 
 public class ProjectController : Controller
 {
@@ -12,6 +13,8 @@ public class ProjectController : Controller
     {
         _context = context;
     }
+
+    #region Index
 
     [Authorize]
     public async Task<IActionResult> Index()
@@ -26,4 +29,28 @@ public class ProjectController : Controller
 
         return View(projects);
     }
+
+    #endregion
+    #region Create
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(Project project)
+    {
+        var userId = int.Parse(
+            User.FindFirstValue(ClaimTypes.NameIdentifier)!
+        );
+
+        project.OwnerId = userId;
+        project.CreatedAt = DateTime.UtcNow;
+        project.Status = ProjectStatus.NotStarted;
+
+        _context.Projects.Add(project);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    #endregion
 }
