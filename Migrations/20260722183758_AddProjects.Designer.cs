@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProjectManagement.Data;
@@ -11,9 +12,11 @@ using ProjectManagement.Data;
 namespace ProjectManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260722183758_AddProjects")]
+    partial class AddProjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,15 +47,15 @@ namespace ProjectManagement.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("OwnerId")
+                    b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Projects");
                 });
@@ -90,13 +93,13 @@ namespace ProjectManagement.Migrations
 
             modelBuilder.Entity("Project", b =>
                 {
-                    b.HasOne("ProjectManagement.Models.User", "Owner")
+                    b.HasOne("ProjectManagement.Models.User", "User")
                         .WithMany("Projects")
-                        .HasForeignKey("OwnerId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Owner");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProjectManagement.Models.User", b =>

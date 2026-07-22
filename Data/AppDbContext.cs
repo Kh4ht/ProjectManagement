@@ -14,7 +14,10 @@ public class AppDbContext : DbContext
     }
 
     // A DbSet<T> represents a table in the database, Can add more DbSet properties for other entities as needed.
+
     public DbSet<User> Users => Set<User>();
+
+    public DbSet<Project> Projects => Set<Project>();
 }
 
 // To apply the changes to the database, you can use the following command in the terminal:

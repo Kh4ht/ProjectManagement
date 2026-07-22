@@ -40,7 +40,7 @@ public class AccountController : Controller
 
         if (existingUser)
         {
-            ModelState.AddModelError("", "Email already exists");
+            ModelState.AddModelError(nameof(model.Email), "Email already exists.");
             return View(model);
         }
 
